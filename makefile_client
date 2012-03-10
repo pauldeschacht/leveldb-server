@@ -1,0 +1,15 @@
+CC=g++
+RM=rm
+CPPFLAGS=-I/usr/include
+LDFLAGS=-lzmq
+LDLIBS=
+SCR=client.cpp
+OBJS=$(SRC:.cpp=.o)
+EXE=client
+
+all: $(EXE)
+
+$(EXE):
+	$(CC) $(CPPFLAGS) $(SCR) $(LDFLAGS) -o $(EXE)
+clean:
+	$(RM) main *.o

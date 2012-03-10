@@ -1,0 +1,15 @@
+CC=g++
+RM=rm
+CPPFLAGS=-I/usr/include -I/home/pauldeschacht/dev/leveldb/include
+LDFLAGS=-lzmq -L/home/pauldeschacht/dev/leveldb -lleveldb
+LDLIBS=
+SRC=server.cpp
+OBJS=$(SRC:.cpp=.o)
+EXE=server
+
+all: $(EXE)
+
+$(EXE):
+	$(CC) $(CPPFLAGS) $(SRC) $(LDFLAGS) -o $(EXE)
+clean:
+	$(RM) $(EXE) *.o
