@@ -1,0 +1,40 @@
+Summary
+-------
+A simple wrapper on top of Google's leveldb (https://code.google.com/p/leveldb) allowing different processes to access the same leveldb databases. The read and  write commands are send over ZeroMQ (http://www.zeromq.com), which allows IPC as well as TCP)
+
+Example
+-------
+  zmq::context_t context(1);
+  zmq::socket_t socket(context,ZMQ_REQ);
+
+  std::vector<std::string> commands;
+  commands.push_back("put,DCX1234,23456fev64g");
+  commands.push_back("put,DCX1235,rgine5-8u3");
+  commands.push_back("put,DCX1234,second key");
+  commands.push_back("get,DCX1234");
+  commands.push_back("get,DCX1235");
+  commands.push_back("get,DCX0000");
+
+  socket.connect("ipc://test.ipc");
+
+  for(int i=0;i<commands.size();i++) {
+
+    const std::string& command = commands[i];
+    zmq::message_t request(command.size());
+    memcpy((void*)request.data(),command.data(),command.size());
+    std::cout << "sending command " << std::string((char*)request.data(),request.size()) << std::endl;
+    socket.send(request);
+
+    zmq::message_t reply;
+    socket.recv(&reply);
+    std::cout << "received        " << std::string((char*)reply.data(),reply.size()) << std::endl;
+ 
+
+Future extensions
+-----------------
+Batched commands
+
+Requirements
+------------
+leveldb and ZeroMQ libraries
+
