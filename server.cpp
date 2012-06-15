@@ -3,12 +3,9 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-//#include <boost/lexical_cast.hpp>
 
 #include <zmq.hpp>
 #include <leveldb/db.h>
-
-#include <toolbox/TimeValue.h>
 
 #include <pthread.h>
 #include <unistd.h>
@@ -78,7 +75,6 @@ typedef struct {
   bool _status;
   std::string _key;
   std::string _value;
-  toolbox::TimeValue _duration;
 } Operation;
 
 bool do_operation(const std::string& command, Operation& operation) {
@@ -255,8 +251,8 @@ int main(int argc, char** argv) {
 
     if (argc==3) {
         std::string strWorkers = argv[2];
-        // nbWorkers = boost::lexical_cast<int>(strWorkers);
-        nbWorkers = 2;
+        //nbWorkers = boost::lexical_cast<int>(strWorkers);
+        nbWorkers = atoi(strWorkers.c_str());
     }
 
     if(nbWorkers==1) {
